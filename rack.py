@@ -9,55 +9,90 @@ from adafruit_mcp230xx.mcp23017 import MCP23017
 
 class rack:
 
-    def __init__(self, rack_address = 0x20, rack_size = 16, fire_state = False):
+    def __init__(self, rack_address = 0x20, rack_size = 16, fire_state = False, descriptions = None):
         self.i2c = busio.I2C(board.SCL, board.SDA)
-        self.mcp = MCP23017(self.i2c, address=rack_address)
+        self.address = rack_address
+        try:
+            self.mcp = MCP23017(self.i2c, address=rack_address)
+        except ValueError:
+            logger.error("Unable to create rack, no device at address.")
+            self.mcp = None
         self.rack_size = rack_size                              # How many channels does the rack have? Default = 16
-        self.fire_state = False                                 # What state is used to fire the channel?  Use False for active low relays
+        self.fire_state = fire_state                                 # What state is used to fire the channel?  Use False for active low relays
         self.channels = []                                      # Store the connections to the rack
         self.channels_fired = []                                # Keep track if it's been fired
-        
+        self.map = [8, 0, 9, 1, 10, 2, 11, 3, 12, 4, 13, 5, 14, 6, 15, 7]
+        self.descriptions = []
+        if descriptions:
+            for item in descriptions:
+                self.descriptions.append(item)
+        if self.mcp:
+            self.initializeChannels()
 
+
+    def initializeChannels(self):
+        self.channels = []  
         for channel in range(0, self.rack_size):
             logger.debug("Initializing Channel " + str(channel))
             pin = self.mcp.get_pin(channel)
             pin.direction = digitalio.Direction.OUTPUT
-            pin.value = True
+            pin.value = not self.fire_state 
             self.channels.append(pin)
             logger.debug("Done!")
             self.channels_fired.append(False)
 
+
     def check_rack(self):
         """Return an array of status by channel."""
-        # status = []
-        # for channel in range(0, self.rack_size):
-        #     status.append({ 'channel_name': 'channel ' + str(channel),
-        #                     'channel_number': channel,
-        #                     'channel_status': self.channels[channel].value
-        #     })
-        # return status
         return self.channels_fired
 
+    def status(self):
+        status = {}
+        status['channels'] = [] 
+        for i in range(0, self.rack_size):
+            mychannel = {}
+            mychannel["id"] = i
+            mychannel["fired"] = self.channels_fired[i]
+            mychannel["description"] = self.descriptions[i]
+            status['channels'].append(mychannel)
+        # status['channels_fired'] = self.channels_fired
+        status['rack_size'] = self.rack_size
+        status['address'] = self.address
+        status['fire_state'] = self.fire_state
+        return status
+
+    def all_fired(self):
+        """If we don't have any channels that say false, return true."""
+        if False in self.channels_fired:
+            return False
+        else:
+            return True
 # FIRING
 
     def fire_channel(self, channel, fire_time = 5):
         if not self.channels_fired[channel]:
-            logger.debug("Firing channel {}".format(channel))
-            self.channels[channel] = self.fire_state
-            logger.debug("Activating for {} seconds".format(fire_time))
+            if len(self.descriptions) > 0:
+                logger.info("Firing {}".format(self.descriptions[channel]))
+            else:
+                logger.info("Firing channel {}".format(channel))
+            self.channels[self.map[channel]].value = self.fire_state
+            logger.info("Activating for {} seconds".format(fire_time))
             time.sleep(fire_time)
-            self.channels[channel] = not self.fire_state
+            self.channels[self.map[channel]].value = not self.fire_state
             self.channels_fired[channel] = True
-            logger.debug("Finished!")
+            logger.info("Finished!")
         else:
             logger.warning("Can't fire channel {}, it's already been fired.".format(channel))
 
     def fire_random(self, fire_time = 5):
+        if self.all_fired():
+            logger.error("Unable to find an unfired channel")
+            return False
         while True:
             channel = random.randrange(self.rack_size)
             if not self.channels_fired[channel]:
                 break
-        self.fire_channel(channel)
+        self.fire_channel(channel, fire_time)
         
 
 # RESETS

@@ -3,3 +3,6 @@ adafruit-circuitpython-mcp230xx >= 2.3
 adafruit-circuitpython-busdevice
 adafruit-blinka
 RPI.GPIO
+flask
+logzero
+pyyaml
