@@ -6,6 +6,8 @@ import time
 import random
 from logzero import logger
 from adafruit_mcp230xx.mcp23017 import MCP23017
+from multiprocessing import Process
+
 
 class rack:
 
@@ -61,6 +63,9 @@ class rack:
         status['fire_state'] = self.fire_state
         return status
 
+    def mark_fired(self, channel):
+        self.channels_fired[channel] = True
+
     def all_fired(self):
         """If we don't have any channels that say false, return true."""
         if False in self.channels_fired:
@@ -68,6 +73,13 @@ class rack:
         else:
             return True
 # FIRING
+
+    def fire_channel_thread(self, channel, fire_time = 5):
+        p = Process(target=self.fire_channel, args=(channel, fire_time))
+        p.daemon = True
+        p.start()
+        self.mark_fired(channel)
+        return channel
 
     def fire_channel(self, channel, fire_time = 5):
         if not self.channels_fired[channel]:
@@ -79,8 +91,8 @@ class rack:
             logger.info("Activating for {} seconds".format(fire_time))
             time.sleep(fire_time)
             self.channels[self.map[channel]].value = not self.fire_state
-            self.channels_fired[channel] = True
-            logger.info("Finished!")
+            # self.channels_fired[channel] = True
+            logger.debug("Finished!")
         else:
             logger.warning("Can't fire channel {}, it's already been fired.".format(channel))
 
@@ -92,7 +104,11 @@ class rack:
             channel = random.randrange(self.rack_size)
             if not self.channels_fired[channel]:
                 break
-        self.fire_channel(channel, fire_time)
+        p = Process(target=self.fire_channel, args=(channel, fire_time))
+        p.daemon = True
+        p.start()
+        self.mark_fired(channel)
+        return channel
         
 
 # RESETS

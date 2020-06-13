@@ -74,7 +74,7 @@ class rackset:
 
 
     def fire_channel(self, rack, channel, fire_time = 5):
-        self.rack_array[rack].fire_channel(channel, fire_time)
+        return self.rack_array[rack].fire_channel_thread(channel, fire_time)
     
     def fire_random(self, fire_channel = 5):
         if self.all_fired():
@@ -84,5 +84,9 @@ class rackset:
             rack = random.randrange(self.size())
             if not self.rack_array[rack].all_fired():
                 break
-        self.rack_array[rack].fire_random(fire_channel)
+        fired_channel = self.rack_array[rack].fire_random(fire_channel)
+        return rack, fired_channel
         
+    def reset(self):
+        for rack in range(0,self.size()):
+            self.rack_array[rack].reset_all_channels()
