@@ -1,47 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Piro</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <script>
+{% extends "layout.html" %}
+{% block title %} - Random{% endblock %}
+{% block scripts %}
+<script>
     $(document).ready(function(){
       $("button").click(function(){
-        $.get("/rackset/fire/random", function(data, status){
-          alert("Data: " + data + "\nStatus: " + status);
+        $.post("/rackset/fire/random", function(data, status){
+          console.log(data);
+          $("span").html(data.nice_status);
         });
       });
     });
-    </script>
-<style>
-.bg-1 {
-    background-color: #444444; /* Green */
-    color: #ffffff;
-}
-.btn-xl {
-padding: 50px 50px;
-margin-top:200px;
-font-size: 38px; 
-line-height: normal;
--webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-        border-radius: 8px;
-}
-</style>
-</head>
-<body class="bg-1">
-
-
-<div class="container d-flex h-100">
-  <h1>Piro</h1>
-  <div class="container text-center row justify-content-center align-self-center">
+</script>
+{% endblock %}
+{% block content %}
+<div class="container text-center row justify-content-center align-self-center">
     <button type="button" class="btn-xl btn-danger">Fire Random</button>
-  </div>
 </div>
-
-
-</body>
-</html> 
+{% endblock %}

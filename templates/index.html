@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block title %}{% endblock %}
+{% block scripts %}
+<script>
+    function update_list(){
+      $.get("/rackset/status", function(data, status){
+          // console.log(data);
+          // console.log(status);
+          var listoutput = "";
+            for (var i = 0; i < data.length; i++) { 
+                listoutput = listoutput.concat("<div class=\"container rack_title\">Rack " + i + "</div>");
+                // console.log(data[i].address);
+                for (var j = 0; j < data[i].channels.length; j++) {
+                    if (data[i].channels[j].fired == true) {
+                      button_fired = "btn-warning btn-sm\" disabled>"
+                    } else {
+                      button_fired = "btn-danger btn-sm\">"
+                    }
+                    if (j % 2){
+                      my_bg = "bg-1"
+                    }else {
+                      my_bg = "bg-3"
+                    }
+                    
+                    listoutput = listoutput.concat("<div class=\"container channel_row w-25 " + my_bg + "\">Channel " + j + " - " 
+                      + data[i].channels[j].description + " <button type=\"button\" onclick=\"fire_channel(" + i + ", " + j 
+                      + ")\" class=\"pull-right " + button_fired + "Fire</button></div>");
+                    // console.log(data[i].channels[j]);
+                } 
+            }
+            $("#channel_listing").html(listoutput);
+            // document.getElementById("channel_listing").value = listoutput;
+    });
+    };
+    $(document).ready(function(){
+        $.get("/rackset/status", function(data, status){
+          update_list();
+        });
+    });
+    function fire_channel(rack, channel){
+        $.post("/rackset/fire/" + rack + "/" + channel, function(data, status){
+          console.log(data);
+          $("#status_bar").html(data.nice_status);
+          update_list();
+        });
+      };
+  </script>
+{% endblock %}
+{% block content %}
+<div class="container "><p> </p> </div>
+<div class="container text-center row justify-content-center align-self-center">
+  <A HREF="/random"><button type="button" name="random" class="btn-primary">Fire Random</button></A>
+  <A HREF="/admin"><button type="button" name="admin" class="btn-secondary">Admin</button></A>
+  <!-- <button type="button" name="load_config" class="btn-lg btn-warning">Load Config</button> -->
+</div>
+<span id="channel_listing"></span>
+<!-- <div class="container rack_title">Rack 0</div> -->
+<!-- <div class="container channel_row">Channel 0 - Mortar Tube 1 <button type="button" name="fire_0_0" class="btn-danger btn-sm">Fire</button></div>
+<div class="container channel_row">Channel 1 - Mortar Tube 2 <button type="button" name="fire_0_1" class="btn-warning btn-sm" disabled>Fire</button></div> -->
+{% endblock %}

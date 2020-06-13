@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <title>Piro{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    {% block scripts %}
+    {% endblock %}
+  <style>
+    .bg-1 {
+        background-color: #444444; /* Grey 4444444 */
+        color: white;
+    }
+    .bg-2 {
+        background-color: black; /* Black */
+        color: #2ef74f;
+        font-family: "Roboto Mono", Courier, monospace;
+        border-style: solid;
+        border-color: gray;
+        border-width: medium;
+    }
+    .bg-3 {
+        background-color: #555555;
+        color: white;
+    }
+    .btn-xl {
+    padding: 50px 50px;
+    margin-top:200px;
+    font-size: 38px; 
+    line-height: normal;
+    -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+            border-radius: 8px;
+    }
+    .rack_title {
+      font-size: 30px;
+      font-family: "Roboto", Courier, monospace;
+    }
+    .channel_row {
+      font-size: 16px;
+      font-family: "Roboto", Courier, monospace;
+    }
+  </style>
+  {% endblock %}
+  </head>
+
+  <body class="bg-1">
+    <div class="container d-flex h-100">
+        <a href="/"><img src="images/piro.png" height="100" alt="Piro" /></a>
+        <div class="container bg-2" >Status: <span id="status_bar"></span></div>
+        {% block content %}{% endblock %}
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block title %} - Admin{% endblock %}
+{% block script %}
+<script>
+  $(document).ready(function(){
+    $("button[name='reset_channels']").click(function(){
+      $.post("/rackset/reset", function(data, status){
+        console.log(data);
+        $("span").html(data.nice_status);
+      });
+    });
+  });
+  </script>
+{% endblock %}
+{% block content %}
+<div class="container "><p> </p> </div>
+<div class="container text-center row justify-content-center align-self-center">
+  <button type="button" name="reset_channels" class="btn-lg btn-primary">Reset Channels</button>
+  <button type="button" name="save_config" class="btn-lg btn-primary">Save Config</button>
+  <button type="button" name="load_config" class="btn-lg btn-warning">Load Config</button>
+</div>
+{% endblock %}
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Piro</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<style>
+.bg-1 {
+    background-color: #444444; /* Grey 4444444 */
+    color: white;
+}
+.bg-2 {
+    background-color: black; /* Black */
+    color: #2ef74f;
+    font-family: "Roboto Mono", Courier, monospace;
+    border-style: solid;
+    border-color: gray;
+    border-width: medium;
+}
+.btn-xl {
+padding: 50px 50px;
+margin-top:200px;
+font-size: 38px; 
+line-height: normal;
+-webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+        border-radius: 8px;
+}
+</style>
+</head>
+<body class="bg-1">
+
+
+<div class="container d-flex h-100">
+  <h1>Piro</h1>
+  <div class="container bg-2">Status: <span></span></div>
+
+</div>
+
+
+</body>
+</html>  -->
