@@ -1,23 +1,21 @@
 {% extends "layout.html" %}
 {% block title %} - Admin{% endblock %}
-{% block script %}
+{% block scripts %}
 <script>
-  $(document).ready(function(){
-    $("button[name='reset_channels']").click(function(){
-      $.post("/rackset/reset", function(data, status){
+  function reset_channels(){
+    $.post("/rackset/reset", function(data, status){
         console.log(data);
         $("span").html(data.nice_status);
-      });
-    });
   });
-  </script>
+};
+</script>
 {% endblock %}
 {% block content %}
 <div class="container "><p> </p> </div>
 <div class="container text-center row justify-content-center align-self-center">
-  <button type="button" name="reset_channels" class="btn-lg btn-primary">Reset Channels</button>
-  <button type="button" name="save_config" class="btn-lg btn-primary">Save Config</button>
-  <button type="button" name="load_config" class="btn-lg btn-warning">Load Config</button>
+  <button type="button" class="btn-lg btn-primary" onclick="reset_channels()">Reset Channels</button>
+  <button type="button" class="btn-lg btn-primary" onclick="save_config()">Save Config</button>
+  <button type="button" class="btn-lg btn-warning" onclick="load_config()">Load Config</button>
 </div>
 {% endblock %}
 
