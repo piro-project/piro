@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 logzero.loglevel(logging.INFO)
 racks = rackset.rackset()
-racks.load_racks_from_file('config.yaml')
+# racks.load_racks_from_file('config.yaml')
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -28,7 +28,7 @@ def send_js(path):
 def healthCheck():
     return '{"status": "piro API is up"}'
 
-@app.route("/rackset/load/<filename>")
+@app.route("/rackset/load/<filename>", methods = ['POST'])
 def loadRackset(filename):
     racks.load_racks_from_file(filename)
     return '{"status": "rackset loaded."}'
