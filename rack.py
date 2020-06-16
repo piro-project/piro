@@ -11,7 +11,7 @@ from multiprocessing import Process
 
 class rack:
 
-    def __init__(self, rack_address = 0x20, rack_size = 16, fire_state = False, descriptions = None):
+    def __init__(self, rack_address = 0x20, rack_size = 16, fire_state = False, descriptions = None, rack_map = None):
         self.i2c = busio.I2C(board.SCL, board.SDA)
         self.address = rack_address
         try:
@@ -23,7 +23,14 @@ class rack:
         self.fire_state = fire_state                                 # What state is used to fire the channel?  Use False for active low relays
         self.channels = []                                      # Store the connections to the rack
         self.channels_fired = []                                # Keep track if it's been fired
-        self.map = [8, 0, 9, 1, 10, 2, 11, 3, 12, 4, 13, 5, 14, 6, 15, 7]
+        # Map types:
+            # Down and back U shape: [8, 0, 9, 1, 10, 2, 11, 3, 12, 4, 13, 5, 14, 6, 15, 7]
+            # Down twice: [8, 0, 9, 1, 10, 2, 11, 3,  7, 15, 6, 14, 5, 13, 4, 12]
+            # Twelve tubes + 4 misc on bottom: [8, 0, 9, 1, 10, 2, 7, 15, 6, 14, 5, 13, 11, 3, 4, 12]
+        if not rack_map:
+            self.map = [8, 0, 9, 1, 10, 2, 11, 3, 12, 4, 13, 5, 14, 6, 15, 7]
+        else:
+            self.map = rack_map
         self.descriptions = []
         if descriptions:
             for item in descriptions:

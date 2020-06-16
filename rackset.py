@@ -19,6 +19,12 @@ class rackset:
         else:
             rack_address = False
 
+        # Setup rack address
+        if 'map' in config:
+            rack_map = config['map']
+        else:
+            rack_map = [8, 0, 9, 1, 10, 2, 11, 3, 12, 4, 13, 5, 14, 6, 15, 7]
+
         # Setup rack size
         if 'rack_size' in config:
             rack_size = config['rack_size']
@@ -39,7 +45,7 @@ class rackset:
         else:
             channels = False
 
-        self.rack_array.append(rack.rack(rack_address, rack_size, fire_state, channels))
+        self.rack_array.append(rack.rack(rack_address, rack_size, fire_state, channels, rack_map))
 
     def load_racks_from_file(self, filename):
         a_yaml_file = open(filename)
