@@ -1,6 +1,7 @@
 racks:
   - rack_address: 0x22
     firing_time: 2
+    map: [8, 0, 9, 1, 10, 2, 7, 15, 6, 14, 5, 13, 11, 3, 4, 12]
     descriptions:
       - Mortar Tube 1
       - Mortar Tube 2
@@ -8,13 +9,13 @@ racks:
       - Mortar Tube 4
       - Mortar Tube 5
       - Mortar Tube 6
-      - Misc 1
-      - Misc 2
       - Mortar Tube 7
       - Mortar Tube 8
       - Mortar Tube 9
       - Mortar Tube 10
       - Mortar Tube 11
       - Mortar Tube 12
+      - Misc 1
+      - Misc 2
       - Misc 3
       - Misc 4
