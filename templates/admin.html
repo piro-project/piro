@@ -6,15 +6,21 @@
     $.post("/rackset/reset", function(data, status){
         console.log(data);
         $("span").html(data.nice_status);
-  });
-};
+    });
+  };
+  function load_config(){
+    $.post("/rackset/load/config.yaml", function(data, status){
+        console.log(data);
+        $("span").html(data.nice_status);
+    });
+  };
 </script>
 {% endblock %}
 {% block content %}
 <div class="container "><p> </p> </div>
 <div class="container text-center row justify-content-center align-self-center">
   <button type="button" class="btn-lg btn-primary" onclick="reset_channels()">Reset Channels</button>
-  <button type="button" class="btn-lg btn-primary" onclick="save_config()">Save Config</button>
+  <button type="button" class="btn-lg btn-primary" onclick="save_config()" disabled>Save Config</button>
   <button type="button" class="btn-lg btn-warning" onclick="load_config()">Load Config</button>
 </div>
 {% endblock %}
