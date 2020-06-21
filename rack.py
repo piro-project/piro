@@ -11,7 +11,7 @@ from multiprocessing import Process
 
 class rack:
 
-    def __init__(self, rack_address = 0x20, rack_size = 16, fire_state = False, descriptions = None, rack_map = None):
+    def __init__(self, rack_address = 0x20, rack_size = 16, fire_state = False, descriptions = None, rack_map = None, firing_time = 5):
         self.i2c = busio.I2C(board.SCL, board.SDA)
         self.address = rack_address
         try:
@@ -21,6 +21,7 @@ class rack:
             self.mcp = None
         self.rack_size = rack_size                              # How many channels does the rack have? Default = 16
         self.fire_state = fire_state                                 # What state is used to fire the channel?  Use False for active low relays
+        self.firing_time = firing_time
         self.channels = []                                      # Store the connections to the rack
         self.channels_fired = []                                # Keep track if it's been fired
         # Map types:
@@ -81,14 +82,16 @@ class rack:
             return True
 # FIRING
 
-    def fire_channel_thread(self, channel, fire_time = 5):
-        p = Process(target=self.fire_channel, args=(channel, fire_time))
+    def fire_channel_thread(self, channel):
+        p = Process(target=self.fire_channel, args=(channel, self.firing_time))
         p.daemon = True
         p.start()
         self.mark_fired(channel)
         return channel
 
-    def fire_channel(self, channel, fire_time = 5):
+    def fire_channel(self, channel, fire_time = None):
+        if not fire_time:
+            fire_time = self.firing_time
         if not self.channels_fired[channel]:
             if len(self.descriptions) > 0:
                 logger.info("Firing {}".format(self.descriptions[channel]))
@@ -103,7 +106,9 @@ class rack:
         else:
             logger.warning("Can't fire channel {}, it's already been fired.".format(channel))
 
-    def fire_random(self, fire_time = 5):
+    def fire_random(self, fire_time = None):
+        if not fire_time:
+            fire_time = self.firing_time
         if self.all_fired():
             logger.error("Unable to find an unfired channel")
             return False

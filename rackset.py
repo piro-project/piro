@@ -19,11 +19,17 @@ class rackset:
         else:
             rack_address = False
 
-        # Setup rack address
+        # Setup rack map
         if 'map' in config:
             rack_map = config['map']
         else:
             rack_map = [8, 0, 9, 1, 10, 2, 11, 3, 12, 4, 13, 5, 14, 6, 15, 7]
+
+        # setup rack firing time
+        if 'firing_time' in config:
+            firing_time = config['firing_time']
+        else:
+            firing_time = 5
 
         # Setup rack size
         if 'rack_size' in config:
@@ -45,7 +51,7 @@ class rackset:
         else:
             channels = False
 
-        self.rack_array.append(rack.rack(rack_address, rack_size, fire_state, channels, rack_map))
+        self.rack_array.append(rack.rack(rack_address, rack_size, fire_state, channels, rack_map, firing_time))
 
     def load_racks_from_file(self, filename):
         a_yaml_file = open(filename)
@@ -79,10 +85,10 @@ class rackset:
         return status
 
 
-    def fire_channel(self, rack, channel, fire_time = 5):
-        return self.rack_array[rack].fire_channel_thread(channel, fire_time)
+    def fire_channel(self, rack, channel):
+        return self.rack_array[rack].fire_channel_thread(channel)
     
-    def fire_random(self, fire_channel = 5):
+    def fire_random(self):
         if self.all_fired():
             logger.error("Can't fire, no unfired channels available")
             return False
