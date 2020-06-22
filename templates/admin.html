@@ -9,11 +9,33 @@
     });
   };
   function load_config(){
-    $.post("/rackset/load/config.yaml", function(data, status){
+
+    $.ajax({
+    url: '/rackset/load/' +  prompt("Please enter the file to load", "config.yaml"),
+    type: 'post',
+    headers: {apikey: localStorage.getItem("apikey")},
+    dataType: 'json',
+    success: function(data, status){
         console.log(data);
         $("span").html(data.nice_status);
+      }
     });
   };
+  function load_authkey(){
+    var apikey = prompt("Please enter your key");
+    localStorage.setItem("apikey", apikey);
+  }
+  function check_authkey(){
+    var apikey = localStorage.getItem("apikey");
+    alert("Your API Key is set to: " + apikey);
+    $.post("/check_key/" + apikey, function(data, status){
+      if (data.status) {
+        alert("Your API Key is valid");
+      } else {
+        alert("Your API Key is invalid");
+      }
+    });
+  }
 </script>
 {% endblock %}
 {% block content %}
@@ -22,6 +44,8 @@
   <button type="button" class="btn-lg btn-primary" onclick="reset_channels()">Reset Channels</button>
   <button type="button" class="btn-lg btn-primary" onclick="save_config()" disabled>Save Config</button>
   <button type="button" class="btn-lg btn-warning" onclick="load_config()">Load Config</button>
+  <button type="button" class="btn-lg btn-warning" onclick="load_authkey()">Load Key</button>
+  <button type="button" class="btn-lg btn-secondary" onclick="check_authkey()">Check Key</button>
 </div>
 {% endblock %}
 
