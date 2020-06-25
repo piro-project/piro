@@ -1,3 +1,7 @@
+<img src="https://github.com/abnormalend/piro/blob/master/images/piro.png" alt="Piro Logo" width="200px">
+
+
+
 # Piro
 ## What is it?
 Piro is an open source raspberry pi fireworks controller.  I created Piro primarily because I like allowing my kids to (safely) set the fireworks off.  
@@ -37,3 +41,9 @@ These are all specific to the hardware I used, your milage may vary:
 In Relay board order: [8, 0, 9, 1, 10, 2, 11, 3, 12, 4, 13, 5, 14, 6, 15, 7]
 Reverse second half : [8, 0, 9, 1, 10, 2, 11, 3,  7, 15, 6, 14, 5, 13, 4, 12]
 Twelve tubes + 4 misc on bottom: [8, 0, 9, 1, 10, 2, 7, 15, 6, 14, 5, 13, 11, 3, 4, 12]
+
+## Screens
+<img src="https://github.com/abnormalend/piro/blob/master/docs/piro-main%20screen.jpg" alt="Main Screen" width="250px">   <img src="https://github.com/abnormalend/piro/blob/master/docs/piro-random%20screen.jpg" alt="Random Screen" width="250px">
+
+## Prototype Rack
+<img src="https://github.com/abnormalend/piro/blob/master/docs/piro-rack.jpg" alt="Rack" width="300px">
