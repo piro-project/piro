@@ -131,3 +131,6 @@ dmypy.json
 # notes
 fireworks.txt
 key.txt
+
+#config files
+*.yaml
