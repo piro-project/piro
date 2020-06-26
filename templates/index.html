@@ -37,13 +37,19 @@
           update_list();
         });
     });
-    function fire_channel(rack, channel){
-        $.post("/rackset/fire/" + rack + "/" + channel, function(data, status){
-          console.log(data);
-          $("#status_bar").html(data.nice_status);
-          update_list();
+    function fire_channel(rack, channel){  
+      $.ajax({
+        url: "/rackset/fire/" + rack + "/" + channel,
+        type: 'post',
+        headers: {apikey: localStorage.getItem("piro_apikey")},
+        dataType: 'json',
+        success: function(data, status){
+            console.log(data);
+            $("#status_bar").html(data.nice_status);
+            update_list();
+          }
         });
-      };
+        };
   </script>
 {% endblock %}
 {% block content %}

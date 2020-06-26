@@ -2,18 +2,23 @@
 {% block title %} - Random{% endblock %}
 {% block scripts %}
 <script>
-    $(document).ready(function(){
-      $("button").click(function(){
-        $.post("/rackset/fire/random", function(data, status){
-          console.log(data);
-          $("span").html(data.nice_status);
-        });
-      });
+  function fire_random(){
+
+    $.ajax({
+    url: '/rackset/fire/random',
+    type: 'post',
+    headers: {apikey: localStorage.getItem("piro_apikey")},
+    dataType: 'json',
+    success: function(data, status){
+        console.log(data);
+        $("span").html(data.nice_status);
+      }
     });
+    };
 </script>
 {% endblock %}
 {% block content %}
 <div class="container text-center row justify-content-center align-self-center">
-    <button type="button" class="btn-xl btn-danger">Fire Random</button>
+    <button type="button" class="btn-xl btn-danger" onclick="fire_random()">Fire Random</button>
 </div>
 {% endblock %}

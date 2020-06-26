@@ -96,7 +96,7 @@ class rackset:
             rack = random.randrange(self.size())
             if not self.rack_array[rack].all_fired():
                 break
-        fired_channel = self.rack_array[rack].fire_random(fire_channel)
+        fired_channel = self.rack_array[rack].fire_random()
         return rack, fired_channel
         
     def reset(self):
