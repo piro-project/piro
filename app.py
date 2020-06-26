@@ -79,6 +79,15 @@ def reset():
     racks.reset()
     return jsonify(nice_status = "all fired_states reset")
 
+@app.route("/rackset/clear", methods = ['POST'])
+def clear():
+    apikey = request.headers.get('apikey')
+    if apikey == key:
+        racks.clear()
+        return jsonify(nice_status = "rack config cleared")
+    else:
+        return jsonify(status = 'authentication failed'), 403
+
 @app.route("/check_key/<apikey>", methods = ['POST'])
 def check_key(apikey):
     # if apikey == key:

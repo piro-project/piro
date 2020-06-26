@@ -102,3 +102,6 @@ class rackset:
     def reset(self):
         for rack in range(0,self.size()):
             self.rack_array[rack].reset_all_channels()
+
+    def clear(self):
+        self.rack_array = []

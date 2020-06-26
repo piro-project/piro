@@ -21,6 +21,19 @@
       }
     });
   };
+  function clear_config(){
+
+    $.ajax({
+    url: '/rackset/clear',
+    type: 'post',
+    headers: {apikey: localStorage.getItem("piro_apikey")},
+    dataType: 'json',
+    success: function(data, status){
+        console.log(data);
+        $("span").html(data.nice_status);
+      }
+    });
+    };
   function load_authkey(){
     var apikey = prompt("Please enter your key");
     localStorage.setItem("piro_apikey", apikey);
@@ -43,9 +56,10 @@
 <div class="container text-center row justify-content-center align-self-center">
   <button type="button" class="btn-lg btn-primary" onclick="reset_channels()">Reset Channels</button>
   <button type="button" class="btn-lg btn-primary" onclick="save_config()" disabled>Save Config</button>
-  <button type="button" class="btn-lg btn-warning" onclick="load_config()">Load Config</button>
-  <button type="button" class="btn-lg btn-warning" onclick="load_authkey()">Load Key</button>
-  <button type="button" class="btn-lg btn-secondary" onclick="check_authkey()">Check Key</button>
+  <button type="button" class="btn-lg btn-primary" onclick="load_config()">Load Config</button>
+  <button type="button" class="btn-lg btn-primary" onclick="clear_config()">Clear Config</button>
+  <button type="button" class="btn-lg btn-primary" onclick="load_authkey()">Load Key</button>
+  <button type="button" class="btn-lg btn-primary" onclick="check_authkey()">Check Key</button>
 </div>
 {% endblock %}
 
