@@ -13,7 +13,7 @@
     $.ajax({
     url: '/rackset/load/' +  prompt("Please enter the file to load", "config.yaml"),
     type: 'post',
-    headers: {apikey: localStorage.getItem("apikey")},
+    headers: {apikey: localStorage.getItem("piro_apikey")},
     dataType: 'json',
     success: function(data, status){
         console.log(data);
@@ -23,10 +23,10 @@
   };
   function load_authkey(){
     var apikey = prompt("Please enter your key");
-    localStorage.setItem("apikey", apikey);
+    localStorage.setItem("piro_apikey", apikey);
   }
   function check_authkey(){
-    var apikey = localStorage.getItem("apikey");
+    var apikey = localStorage.getItem("piro_apikey");
     alert("Your API Key is set to: " + apikey);
     $.post("/check_key/" + apikey, function(data, status){
       if (data.status) {

@@ -41,7 +41,7 @@
       $.ajax({
         url: "/rackset/fire/" + rack + "/" + channel,
         type: 'post',
-        headers: {apikey: localStorage.getItem("apikey")},
+        headers: {apikey: localStorage.getItem("piro_apikey")},
         dataType: 'json',
         success: function(data, status){
             console.log(data);

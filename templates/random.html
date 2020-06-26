@@ -7,7 +7,7 @@
     $.ajax({
     url: '/rackset/fire/random',
     type: 'post',
-    headers: {apikey: localStorage.getItem("apikey")},
+    headers: {apikey: localStorage.getItem("piro_apikey")},
     dataType: 'json',
     success: function(data, status){
         console.log(data);
